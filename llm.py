@@ -1,13 +1,18 @@
 from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage, SystemMessage
+from dotenv import load_dotenv
+import os
 
-def generate_blog(transcribed_text, prompt, groq_api_key):
+load_dotenv()
+
+groq_api_key = os.getenv("GROQ_API_KEY")
+
+def generate_blog(transcribed_text, prompt):
     """
     Generates a blog post using Groq LLM.
 
-    :param transcribed_text: The transcribed text from SST.
+    :param transcribed_text: The transcribed text from STT.
     :param prompt: The prompt for generating the blog.
-    :param groq_api_key: API key for Groq.
     :return: Generated blog content.
     """
     if not groq_api_key:
@@ -21,6 +26,6 @@ def generate_blog(transcribed_text, prompt, groq_api_key):
     ]
 
     # Generate response
-    response = llm(messages)
+    response = llm.invoke(messages)
     
     return response.content if response else "❌ ERROR: Failed to generate blog."
