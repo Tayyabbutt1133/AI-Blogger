@@ -9,15 +9,8 @@ import traceback
 from dotenv import load_dotenv
 import time
 
-# Load API key from .env file
+# Load API key from .env file if available, but don't require it
 load_dotenv()
-elevenlabs_api_key = os.getenv("ELEVENLABS_API_KEY")
-
-if not elevenlabs_api_key:
-    raise ValueError("Error: ELEVENLABS_API_KEY is missing. Please set it in the .env file.")
-
-# Initialize ElevenLabs client
-client = ElevenLabs(api_key=elevenlabs_api_key)
 
 def record_audio(output_path="recorded_audio.wav", duration=50, sample_rate=44100):
     """
@@ -48,6 +41,9 @@ def transcribe_audio(audio_path, elevenlabs_api_key):
         if not elevenlabs_api_key:
             print("❌ ERROR: Eleven Labs API key is missing!")
             return None
+        
+        # Initialize client with the provided API key
+        client = ElevenLabs(api_key=elevenlabs_api_key)
         
         print("\n==== STARTING TRANSCRIPTION PROCESS ====")
         print(f"Audio file: {audio_path}")
